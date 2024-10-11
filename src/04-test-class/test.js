@@ -1,4 +1,0 @@
-import {getBankAccount} from '.'
-
-
-const 
