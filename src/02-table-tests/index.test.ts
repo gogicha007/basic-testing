@@ -17,5 +17,5 @@ describe('simpleCalculator', () => {
   test.each(testCases)('should blah-blah', (val) => {
     expect(simpleCalculator(val)).toBe(val.expected);
   });
-  // Consider to use Jest table tests API to test all cases above
+
 });
