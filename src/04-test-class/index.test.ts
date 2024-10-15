@@ -1,29 +1,32 @@
 // Uncomment the code below and write your tests
-import { getBankAccount } from '.';
+import {
+  getBankAccount,
+  InsufficientFundsError,
+  SynchronizationFailedError,
+  TransferFailedError,
+} from '.';
 
 describe('BankAccount', () => {
   const initialBalance = 1000;
   const myAccount = getBankAccount(initialBalance);
   const otherAccount = getBankAccount(initialBalance);
   test('should create account with initial balance', () => {
-    expect(myAccount.getBalance()).toBe(1000);
+    expect(myAccount.getBalance()).toBe(initialBalance);
   });
 
   test('should throw InsufficientFundsError error when withdrawing more than balance', () => {
-    expect(() => myAccount.withdraw(2000)).toThrow(
-      `Insufficient funds: cannot withdraw more than ${initialBalance}`,
-    );
+    expect(() => myAccount.withdraw(2000)).toThrow(InsufficientFundsError);
   });
 
   test('should throw error when transferring more than balance', () => {
     expect(() => myAccount.transfer(2000, otherAccount)).toThrow(
-      `Insufficient funds: cannot withdraw more than ${initialBalance}`,
+      InsufficientFundsError,
     );
   });
 
   test('should throw error when transferring to the same account', () => {
     expect(() => myAccount.transfer(2000, myAccount)).toThrow(
-      'Transfer failed',
+      TransferFailedError,
     );
   });
 
@@ -67,7 +70,7 @@ describe('BankAccount', () => {
   test('should throw SynchronizationFailedError if fetchBalance returned null', async () => {
     jest.spyOn(myAccount, 'fetchBalance').mockResolvedValue(null);
     await expect(myAccount.synchronizeBalance()).rejects.toThrow(
-      'Synchronization failed',
+      SynchronizationFailedError,
     );
   });
 });
